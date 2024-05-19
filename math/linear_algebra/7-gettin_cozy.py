@@ -12,7 +12,7 @@ def cat_matrices2D(mat1, mat2, axis=0):
         If axis is 1, concatenates along the columns. Defaults to 0.
 
     Returns:
-    list of lists or None: A new matrix resulting from concatenating mat1 and mat2
+    A new matrix resulting from concatenating mat1 and mat2
     along the specified axis. Returns None if concatenation is not possible.
     """
     if axis == 0:
