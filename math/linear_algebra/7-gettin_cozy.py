@@ -7,13 +7,13 @@ def cat_matrices2D(mat1, mat2, axis=0):
     Parameters:
     mat1 (list of lists): The first matrix.
     mat2 (list of lists): The second matrix.
-    The axis along which to concatenate the matrices.
+    axis (int, optional): The axis along which to concatenate the matrices.
         If axis is 0, concatenates along the rows.
-        If axis is 1, concatenates along the columns.
+        If axis is 1, concatenates along the columns. Defaults to 0.
 
     Returns:
-    A new matrix resulting from concatenating mat1 and mat2
-    along the specified axis.
+    list of lists or None: A new matrix resulting from concatenating mat1 and mat2
+    along the specified axis. Returns None if concatenation is not possible.
     """
     if axis == 0:
         # Concatenate along the rows
