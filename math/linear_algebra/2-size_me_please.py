@@ -8,7 +8,8 @@ def matrix_shape(matrix):
     Calculates the shape of a matrix.
 
     Parameters:
-    matrix (list): A list of lists (matrix) where each sublist is of the same length.
+    matrix (list): A list of lists (matrix) where each sublist is of the same 
+                   length.
 
     Returns:
     list: A list of integers representing the shape of the matrix.
