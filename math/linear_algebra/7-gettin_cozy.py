@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 def cat_matrices2D(mat1, mat2, axis=0):
     """
     Concatenates two matrices along a specific axis.
@@ -17,7 +15,7 @@ def cat_matrices2D(mat1, mat2, axis=0):
     """
     if axis == 0:
         # Concatenate along the rows
-        if all(len(row) == len(mat1[0]) for row in mat2):
+        if len(mat1[0]) == len(mat2[0]):
             return mat1 + mat2
     elif axis == 1:
         # Concatenate along the columns
