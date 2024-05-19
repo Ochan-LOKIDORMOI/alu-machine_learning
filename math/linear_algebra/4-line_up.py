@@ -13,8 +13,9 @@ def add_arrays(arr1, arr2):
     arr2 (list): The second array.
 
     Returns:
-    list: A new list containing the result of adding corresponding elements of arr1 and arr2.
-    If the lengths of arr1 and arr2 are different, returns None.
+    list: A new list containing the result of adding corresponding elements
+    If the lengths of arr1 and arr2 are different, 
+	returns None.
     """
     if len(arr1) != len(arr2):
         return None
