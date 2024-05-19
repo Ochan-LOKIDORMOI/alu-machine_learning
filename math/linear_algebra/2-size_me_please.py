@@ -3,12 +3,13 @@
 Module for calculating the shape of a matrix.
 """
 
+
 def matrix_shape(matrix):
     """
     Calculates the shape of a matrix.
 
     Parameters:
-    matrix (list): A list of lists (matrix) where each sublist is of the same 
+    matrix (list): A list of lists (matrix) where each sublist is of the same
                    length.
 
     Returns:
