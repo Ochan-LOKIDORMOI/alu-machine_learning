@@ -12,7 +12,7 @@ def matrix_transpose(matrix):
     matrix (list of lists): The matrix to be transposed.
 
     Returns:
-    list of lists: The transposed matrix, where rows become columns and vice versa.
+    lists: The transposed matrix, where rows become columns and vice versa.
     """
     return [
         list(row) for row in zip(*matrix)
