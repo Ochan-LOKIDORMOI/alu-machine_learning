@@ -14,4 +14,6 @@ def matrix_transpose(matrix):
     Returns:
     list of lists: The transposed matrix, where rows become columns and vice versa.
     """
-    return [list(row) for row in zip(*matrix)]
+    return [
+        list(row) for row in zip(*matrix)
+    ]
