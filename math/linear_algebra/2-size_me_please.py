@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 def matrix_shape(matrix):
-"""
-    Calculating the shape of a matrix.
+    """
+    Calculates the shape of a matrix.
 
     Parameters:
     matrix (list): A list of lists (matrix) where each sublist is of the same length.
