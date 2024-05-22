@@ -1,34 +1,31 @@
 #!/usr/bin/env python3
+"""
+This module provides a function to calculate the determinant of a matrix.
+"""
 
 def determinant(matrix):
     """
-    Calculate the determinant of a square matrix.
+    Calculate the determinant of a matrix.
     """
-
-    # Check if matrix is a list of lists
     if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
-        raise TypeError("matrix must be a list of lists")
-
-    # Check if matrix is square
-    if any(len(row) != len(matrix) for row in matrix):
-        return 0
-
-    # Base case for 0x0 matrix
-    if len(matrix) == 0:
-        return 1
-
-    # Base case for 1x1 matrix
-    if len(matrix) == 1:
-        return matrix[0][0]
-
-    # Recursive calculation for larger matrices
-    if len(matrix) == 2:
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
-
-    det = 0
-    for col_idx, value in enumerate(matrix[0]):
-        sign = (-1) ** col_idx
-        sub_matrix = [row[:col_idx] + row[col_idx + 1:] for row in matrix[1:]]
-        det += sign * value * determinant(sub_matrix)
+        raise TypeError()
     
-    return det
+    rows = len(matrix)
+    cols = len(matrix[0])
+    
+    if rows != cols:
+        raise ValueError()
+    
+    if rows == 0:
+        return 0
+    
+    if rows == 1:
+        return matrix[0][0]
+    
+    determinant_value = 0
+    
+    for col in range(cols):
+        submatrix = [[row[i] for i, r in enumerate(matrix[1:]) if i != col] for row in matrix[1:]]
+        determinant_value += matrix[0][col] * determinant(submatrix) * (-1)**(col + 1)
+    
+    return determinant_value
