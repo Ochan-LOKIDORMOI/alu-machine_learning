@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
 def determinant(matrix):
+    """
+    Calculate the determinant of a square matrix.
+    """
+
     # Check if matrix is a list of lists
     if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
 
     # Check if matrix is square
     if any(len(row) != len(matrix) for row in matrix):
-        raise ValueError("matrix must be a square matrix")
+        return 0
 
     # Base case for 0x0 matrix
     if len(matrix) == 0:
