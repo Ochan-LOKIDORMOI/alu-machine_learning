@@ -40,7 +40,8 @@ def minor(matrix):
     Returns:
         list of lists: The minor matrix of the given matrix.
     """
-    if not all(isinstance(row, list) for row in matrix) or not isinstance(matrix, list):
+    if not all(isinstance(row, list) for row in matrix) or 
+                            not isinstance(matrix, list):
         raise TypeError("matrix must be a list of lists")
 
     if len(matrix) == 0 or any(len(row) != len(matrix) for row in matrix):
