@@ -32,7 +32,7 @@ def determinant(matrix):
     if num_rows == 0:
         return 1
 
-    # Square shape validation
+     # Validate square shape
     if any(len(row) != num_rows for row in matrix):
         raise ValueError("matrix must be a square matrix")
 
