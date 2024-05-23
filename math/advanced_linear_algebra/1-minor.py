@@ -1,63 +1,96 @@
 #!/usr/bin/env python3
 """
-Module for calculating the minor matrix of a given matrix.
+Defines function that calculates the minor matrix of a matrix
 """
-
-
-def determinant(matrix):
-    """
-    Calculates the determinant of a matrix.
-
-    Args:
-        matrix (list): A square matrix represented as a list of lists.
-
-    Returns:
-        int: The determinant of the matrix.
-    """
-    if len(matrix) == 1:
-        return matrix[0][0]
-    if len(matrix) == 2:
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
-
-    det = 0
-    for i in range(len(matrix)):
-        mini = [row[:i] + row[i + 1:] for row in matrix[1:]]
-        det += ((-1) ** i) * matrix[0][i] * determinant(mini)
-    return det
 
 
 def minor(matrix):
     """
-    Calculates the minor matrix of a given matrix.
+    Calculates the minor matrix of a matrix
 
-    Args:
-        matrix (list of lists): The matrix to calculate the minor for.
+    parameters:
+        matrix [list of lists]:
+            matrix whose minor matrix should be calculated
 
-    Raises:
-        TypeError: If matrix is not a list of lists.
-        ValueError: If matrix is not square or is empty.
-
-    Returns:
-        list of lists: The minor matrix of the given matrix.
+    returns:
+        the minor matrix of matrix
     """
-    if not all(isinstance(row, list) for row in matrix) or 
-                            not isinstance(matrix, list):
+    if type(matrix) is not list:
         raise TypeError("matrix must be a list of lists")
-
-    if len(matrix) == 0 or any(len(row) != len(matrix) for row in matrix):
-        raise ValueError("matrix must be a non-empty square matrix")
-
-    if len(matrix) == 1 and len(matrix[0]) == 1:
+    matrix_size = len(matrix)
+    if matrix_size == 0:
+        raise TypeError("matrix must be a list of lists")
+    for row in matrix:
+        if type(row) is not list:
+            raise TypeError("matrix must be a list of lists")
+        if len(row) != matrix_size:
+            raise ValueError("matrix must be a non-empty square matrix")
+    if matrix_size == 1:
         return [[1]]
-
     minor_matrix = []
-    for i in range(len(matrix)):
+    for row_idx in range(matrix_size):
         minor_row = []
-        for j in range(len(matrix)):
-            # Adjusting line length for compliance
-            submatrix = [row[:j] + row[j + 1:]
-                         for k, row in enumerate(matrix) if k != i]
-            minor_row.append(determinant(submatrix))
+        for column_idx in range(matrix_size):
+            sub_matrix = []
+            for row in range(matrix_size):
+                if row == row_idx:
+                    continue
+                new_row = []
+                for column in range(matrix_size):
+                    if column == column_idx:
+                        continue
+                    new_row.append(matrix[row][column])
+                sub_matrix.append(new_row)
+            minor_row.append(determinant(sub_matrix))
         minor_matrix.append(minor_row)
-
     return minor_matrix
+
+
+def determinant(matrix):
+    """
+    Calculates the determinant of a matrix
+
+    parameters:
+        matrix [list of lists]:
+            matrix whose determinant should be calculated
+
+    returns:
+        the determinant of matrix
+    """
+    if type(matrix) is not list:
+        raise TypeError("matrix must be a list of lists")
+    matrix_size = len(matrix)
+    if matrix_size == 0:
+        raise TypeError("matrix must be a list of lists")
+    for row in matrix:
+        if type(row) is not list:
+            raise TypeError("matrix must be a list of lists")
+        if len(row) == 0 and matrix_size == 1:
+            return 1
+        if len(row) != matrix_size:
+            raise ValueError("matrix must be a square matrix")
+    if matrix_size == 1:
+        return matrix[0][0]
+    if matrix_size == 2:
+        a = matrix[0][0]
+        b = matrix[0][1]
+        c = matrix[1][0]
+        d = matrix[1][1]
+        return ((a * d) - (b * c))
+    multiplier = 1
+    det = 0
+    for i in range(matrix_size):
+        element = matrix[0][i]
+        sub_matrix = []
+        for row in range(matrix_size):
+            if row == 0:
+                continue
+            new_row = []
+            for column in range(matrix_size):
+                if column == i:
+                    continue
+                new_row.append(matrix[row][column])
+            sub_matrix.append(new_row)
+        det += (element * multiplier * determinant(sub_matrix))
+        multiplier *= -1
+    return det
