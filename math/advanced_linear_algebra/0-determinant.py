@@ -1,31 +1,50 @@
 #!/usr/bin/env python3
 """
-This module provides a function to calculate the determinant of a matrix.
+Calculating the determinant of a matrix.
 """
+
 
 def determinant(matrix):
     """
-    Calculate the determinant of a matrix.
+    Calculate the determinant of a matrix. Validates that the input is a
+    list of lists and checks for squareness. Handles 0x0 matrices by
+    returning 1, in accordance with mathematical conventions.
+
+    Args:
+        matrix (list of lists): The matrix to calculate the determinant for.
+
+    Returns:
+        int or float: The determinant of the matrix, with special handling for
+        0x0 matrices.
+
+    Raises:
+        TypeError: If the matrix is not a list of lists.
+        ValueError: If the matrix is not square.
     """
-    if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
-        raise TypeError()
-    
-    rows = len(matrix)
-    cols = len(matrix[0])
-    
-    if rows != cols:
-        raise ValueError()
-    
-    if rows == 0:
-        return 0
-    
-    if rows == 1:
+    # Matrix format validation
+    if not isinstance(matrix, list) or not all(
+            isinstance(row, list) for row in matrix):
+        raise TypeError("matrix must be a list of lists")
+
+    num_rows = len(matrix)
+
+    # Return for 0x0 matrix
+    if num_rows == 0:
+        return 1
+
+    # Square shape validation
+    if any(len(row) != num_rows for row in matrix):
+        raise ValueError("matrix must be a square matrix")
+
+    # Base case for 1x1 matrix
+    if num_rows == 1:
         return matrix[0][0]
-    
-    determinant_value = 0
-    
-    for col in range(cols):
-        submatrix = [[row[i] for i, r in enumerate(matrix[1:]) if i != col] for row in matrix[1:]]
-        determinant_value += matrix[0][col] * determinant(submatrix) * (-1)**(col + 1)
-    
-    return determinant_value
+
+    # Matrices larger than 1x1
+    det = 0
+    for col in range(num_rows):
+        minor = [row[:col] + row[col + 1:] for row in matrix[1:]]
+        cofactor = (-1) ** col * matrix[0][col] * determinant(minor)
+        det += cofactor
+
+    return det
