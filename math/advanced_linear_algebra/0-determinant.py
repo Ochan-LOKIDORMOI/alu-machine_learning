@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Calculating the determinant of a matrix.
+Module to calculate the determinant of a matrix.
 """
 
 
@@ -21,18 +21,18 @@ def determinant(matrix):
         TypeError: If the matrix is not a list of lists.
         ValueError: If the matrix is not square.
     """
-    # Matrix format validation
+    # Validate matrix format
     if not isinstance(matrix, list) or not all(
             isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
 
     num_rows = len(matrix)
 
-    # Return for 0x0 matrix
+    # Early return for 0x0 matrix
     if num_rows == 0:
         return 1
 
-     # Validate square shape
+    # Validate square shape
     if any(len(row) != num_rows for row in matrix):
         raise ValueError("matrix must be a square matrix")
 
@@ -40,7 +40,7 @@ def determinant(matrix):
     if num_rows == 1:
         return matrix[0][0]
 
-    # Matrices larger than 1x1
+    # Recursive case for matrices larger than 1x1
     det = 0
     for col in range(num_rows):
         minor = [row[:col] + row[col + 1:] for row in matrix[1:]]
