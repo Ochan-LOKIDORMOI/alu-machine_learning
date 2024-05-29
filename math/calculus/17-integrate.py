@@ -3,25 +3,12 @@
 
 
 def poly_integral(poly, C=0):
-    """Function that calculates the integral of a polynomial
-
-    poly: is a list of coefficients representing a polynomial
-        - the index of the list represents the power of x that the
-          coefficient belongs to
-        - Example: if f(x) = x^3 + 3x +5, poly is equal to [5, 3, 0, 1]
-    C: is an integer representing the integration constant
-
-    Return: a new list of coefficients representing the integral of
-    the polynomial"""
-    # i == power of x
-    result = [C]
-    if type(poly) is not list or len(poly) == 0:
+    """calculates the integral of a polynomial"""
+    if (not isinstance(poly, list) or
+       (not isinstance(C, (int, float))) or any
+       (not isinstance(x, (int, float)) for x in poly)):
         return None
-    for i in range(1, len(poly) + 1):
-        x = poly[i - 1] / i
-        if (x - int(x)) == 0:
-            number = int(x)
-        else:
-            number = x
-        result.append(number)
-    return result
+    integral = [C]
+    if poly != [0]:
+        integral = [float(C)] + [poly[i] / (i + 1) for i in range(len(poly))]
+    return [float(x) if not x.is_integer() else int(x) for x in integral]
