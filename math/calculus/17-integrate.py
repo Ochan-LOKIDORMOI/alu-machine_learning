@@ -1,14 +1,23 @@
 #!/usr/bin/env python3
-"""Integrate"""
+"""Integral"""
 
 
 def poly_integral(poly, C=0):
     """calculates the integral of a polynomial"""
-    if (not isinstance(poly, list) or
-       (not isinstance(C, (int, float))) or any
-       (not isinstance(x, (int, float)) for x in poly)):
+    # border cases
+    if type(poly) != list or type(C) != int:
         return None
+    if len(poly) == 0:
+        return None
+
     integral = [C]
-    if poly != [0]:
-        integral = [float(C)] + [poly[i] / (i + 1) for i in range(len(poly))]
-    return [float(x) if not x.is_integer() else int(x) for x in integral]
+    if poly == [0]:
+        return integral
+    idx = 1
+    for i in poly:
+        integral.append(i / idx)
+        if integral[idx] % 1 == 0:
+            integral[idx] = int(integral[idx])
+        idx += 1
+
+    return integral
