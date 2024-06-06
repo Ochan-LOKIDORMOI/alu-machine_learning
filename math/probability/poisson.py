@@ -25,7 +25,7 @@ class Poisson:
             self.lambtha = float(sum(data) / len(data))
 
     def pmf(self, k):
-        """Function that calculates the value of the PMF for a given number of
+        """calculating the value of the PMF for a given number of
         successes
 
         k: is the number of successes
