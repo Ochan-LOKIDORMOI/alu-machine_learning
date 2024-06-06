@@ -44,6 +44,12 @@ class Normal:
         secondPart = self.e ** (self.z_score(x)**2 * -0.5)
         return firstPart * secondPart
 
+    def erf(self, x):
+        """Fuction that calculates the erf of x"""
+        firstPart = (2 / (self.π**0.5))
+        secondPart = x - (x**3 / 3) + (x**5 / 10) - (x**7 / 42) + (x**9 / 216)
+        return firstPart * secondPart
+
     def cdf(self, x):
         """Function that calculates the value of the CDF for a given x-value
         """
