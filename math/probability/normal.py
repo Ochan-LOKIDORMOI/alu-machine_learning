@@ -43,3 +43,9 @@ class Normal:
         firstPart = 1 / (stdd * ((self.π*2)**0.5))
         secondPart = self.e ** (self.z_score(x)**2 * -0.5)
         return firstPart * secondPart
+
+    def cdf(self, x):
+        """Calculating the value of the CDF for a given x-value
+        """
+        z_score_modified = (x - self.mean) / (self.stddev * (2**0.5))
+        return (1 / 2) * (1 + self.erf(z_score_modified))
