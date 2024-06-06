@@ -34,8 +34,8 @@ class Exponential:
             return 0
         return self.lambtha*(self.e**(-self.lambtha*x))
 
-   def cdf(self, x):
-        """Calculating the value of the CDF for a given time
+    def cdf(self, x):
+        """Function that calculates the value of the CDF for a given time
         period
 
         x: is the time period
