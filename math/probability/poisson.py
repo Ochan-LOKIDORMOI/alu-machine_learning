@@ -41,7 +41,7 @@ class Poisson:
         return (self.e ** -self.lambtha) * (self.lambtha ** k) / f_k
 
     def cdf(self, k):
-        """Function that calculates the value of the CDF for a given number of
+        """Calculating the value of the CDF for a given number of
         successes
 
         k: number of successes
