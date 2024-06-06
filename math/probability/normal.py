@@ -45,7 +45,7 @@ class Normal:
         return firstPart * secondPart
 
     def cdf(self, x):
-        """Calculating the value of the CDF for a given x-value
+        """Function that calculates the value of the CDF for a given x-value
         """
         z_score_modified = (x - self.mean) / (self.stddev * (2**0.5))
         return (1 / 2) * (1 + self.erf(z_score_modified))
