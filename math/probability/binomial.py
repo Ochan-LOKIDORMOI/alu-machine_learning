@@ -32,3 +32,18 @@ class Binomial:
             self.p = 1 - (dev / mean)
             self.n = round(mean / self.p)
             self.p = mean / self.n
+
+    def pmf(self, k):
+        """Function that calculates the value of the PMF for a given number
+        of successes
+
+        k: is the number of successes
+
+        Return: the PMF value for k"""
+        k = int(k)
+        if k < 0 or k > self.n:
+            return 0
+        firstPart = self.factorial(self.n) / (
+            self.factorial(k) * self.factorial(self.n - k))
+        secondPart = (self.p**k) * ((1 - self.p)**(self.n - k))
+        return firstPart * secondPart
