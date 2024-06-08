@@ -59,3 +59,10 @@ class Binomial:
         if k < 0 or k > self.n:
             return 0
         return sum(self.pmf(i) for i in range(k + 1))
+
+    def factorial(self, x):
+        """Function that calculates the factorial of x"""
+        result = 1
+        for n in range(1, x + 1):
+            result *= n
+        return result
