@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" likelihood"""
+"""Bayesian probability likelihood"""
 
 
 import numpy as np
