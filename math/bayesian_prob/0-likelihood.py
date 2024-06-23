@@ -64,4 +64,3 @@ def likelihood(x, n, P):
 if __name__ == '__main__':
     P = np.linspace(0, 1, 21)
     print(likelihood(55, 100, P).round(12))
-    
