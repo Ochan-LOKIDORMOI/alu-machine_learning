@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" likelihood"""
 
 """
 Defines a function likelihood that calculates the likelihood
