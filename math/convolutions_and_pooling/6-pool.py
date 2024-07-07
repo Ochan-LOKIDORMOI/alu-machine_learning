@@ -30,20 +30,27 @@ def pool(images, kernel_shape, stride, mode='max'):
     kh, kw = kernel_shape
     sh, sw = stride
 
-    ih, iw = int(h / kh), int(w / kw)
+    output_h = (h - kh) // sh + 1
+    output_w = (w - kw) // sw + 1
 
-    pooled_image = np.zeros((m, ih, iw, c))
+    pooled = np.zeros((m, output_h, output_w, c))
 
-    func = (lambda x, ax: np.max(x, axis=ax), lambda x, ax: np.average(x, ax))
+    for i in range(output_h):
+        for j in range(output_w):
+            i_start = i * sh
+            i_end = i_start + kh
+            j_start = j * sw
+            j_end = j_start + kw
 
-    pool_mode = func[0] if mode == 'max' else func[1]
+            image_slice = images[:, i_start:i_end, j_start:j_end, :]
 
-    for y in range(ih):
-        for x in range(iw):
-            y0 = y * sh
-            y1 = y0 + kh
-            x0 = x * sw
-            x1 = x0 + kw
-            pooled_image[:, y, x, :] = pool_mode(images[:, y0:y1, x0:x1, :],
-                                                 (1, 2))
-    return pooled_image
+            if mode == 'max':
+                pooled[:, i, j, :] = np.max(
+                    image_slice, axis=(1, 2)
+                )
+            elif mode == 'avg':
+                pooled[:, i, j, :] = np.mean(
+                    image_slice, axis=(1, 2)
+                )
+
+    return pooled
