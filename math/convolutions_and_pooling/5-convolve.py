@@ -31,7 +31,7 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
         sw is the stride for the width of the image
 
     Returns: a numpy.ndarray containing the convolved images"""
-    m, h, w, c = images.shape
+m, h, w, c = images.shape
     kh, kw, _, nc = kernels.shape
     sh, sw = stride
 
@@ -49,16 +49,16 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
     output_h = (padded_h - kh) // sh + 1
     output_w = (padded_w - kw) // sw + 1
 
-    padded_images = np.pad(images, ((0, 0), (ph, ph), (pw, pw), (0, 0)), mode='constant')
+    padding_values = ((0, 0), (ph, ph), (pw, pw), (0, 0))
+    padded_images = np.pad(images, padding_values, mode='constant')
 
     output = np.zeros((m, output_h, output_w, nc))
 
     for i in range(output_h):
         for j in range(output_w):
             for k in range(nc):
-                output[:, i, j, k] = np.sum(
-                    padded_images[:, i*sh:i*sh+kh, j*sw:j*sw+kw, :] * kernels[:, :, :, k],
-                    axis=(1, 2, 3)
-                )
+                image_slice = padded_images[:, i*sh:i*sh+kh, j*sw:j*sw+kw, :]
+                kernel = kernels[:, :, :, k]
+                output[:, i, j, k] = np.sum(image_slice * kernel, axis=(1, 2, 3))
 
     return output
