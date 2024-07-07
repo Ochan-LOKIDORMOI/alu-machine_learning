@@ -31,7 +31,7 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
         sw is the stride for the width of the image
 
     Returns: a numpy.ndarray containing the convolved images"""
-m, h, w, c = images.shape
+    m, h, w, c = images.shape
     kh, kw, _, nc = kernels.shape
     sh, sw = stride
 
