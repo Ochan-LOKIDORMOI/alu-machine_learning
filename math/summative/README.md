@@ -10,17 +10,10 @@ This project aims to predict a student's performance index based on several inpu
 **Porject Structure**
 
 .
-├── API/
-│   ├── main.py
-│   ├── model.pkl
-│   ├── requirements.txt
-└── flutterApp/
-    ├── lib/
-    │   └── main.dart
-    ├── pubspec.yaml
-└── linear_regression/
-    ├── Students_Performance_Index_multivariate.ipynb
-    ├── Summative_Assignment_Ochan_LOKIDORMOI.ipynb
+API which contains main.py, model.pkl and requirements.txt
+flutterApp containing lib/main.dart and pubspec.yaml 
+linear_regression containing Students_Performance_Index_multivariate.ipynb and 
+ Summative_Assignment_Ochan_LOKIDORMOI.ipyn
     
 
 
