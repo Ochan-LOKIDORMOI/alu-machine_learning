@@ -8,6 +8,7 @@ Welcome to the Students Performance Prediction Model and App repository. This re
 This project aims to predict a student's performance index based on several input features, including hours studied, previous scores, sleep hours, and the number of sample question papers practiced.
 
 **Porject Structure**
+
 .
 ├── API/
 │   ├── main.py
@@ -20,6 +21,7 @@ This project aims to predict a student's performance index based on several inpu
 └── linear_regression/
     ├── Students_Performance_Index_multivariate.ipynb
     ├── Summative_Assignment_Ochan_LOKIDORMOI.ipynb
+    
 
 
 **API Endpoint**
@@ -30,12 +32,14 @@ POST https://alu-machine-learning-lfkq.onrender.com/predict live on render
 
 **Request Format**
 The API expects a JSON object with the following fields:
+
 {
     "hours_studied": 7,
     "previous_scores": 99,
     "sleep_hours": 9,
     "sample_question_papers_practiced": 1
 }
+
 
 **Response Format**
 The API returns a JSON object with the predicted performance index:
