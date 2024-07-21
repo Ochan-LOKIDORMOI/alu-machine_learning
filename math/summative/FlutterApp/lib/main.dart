@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Students Preformance App Predictor',
+      title: 'Students Performance App Predictor',
       theme: ThemeData(
         primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -64,7 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Students Preformance App Predictor'),
+        title: const Text('Students Performance App Predictor'),
+        backgroundColor: const Color.fromARGB(255, 64, 169, 245),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -103,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: predictPerformance,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 64, 169, 245),
+                backgroundColor: const Color.fromARGB(255, 64, 169, 245),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -130,8 +131,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildTextField({required TextEditingController controller, required String labelText, required IconData icon}) {
     return TextField(
       controller: controller,
+      style: const TextStyle(fontSize: 18), 
       decoration: InputDecoration(
         labelText: labelText,
+        labelStyle: const TextStyle(fontSize: 18),
         prefixIcon: Icon(icon),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
