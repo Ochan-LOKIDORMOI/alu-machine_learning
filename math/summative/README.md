@@ -26,7 +26,7 @@ POST https://alu-machine-learning-lfkq.onrender.com/predict live on render
 - The API expects a JSON object with the following fields:
 
 
-- "hours_studied": 7,
+   - "hours_studied": 7,
    -  "previous_scores": 99,
     - "sleep_hours": 9,
     - "sample_question_papers_practiced": 1
