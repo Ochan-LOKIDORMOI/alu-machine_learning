@@ -23,21 +23,21 @@ Public API Endpoint
 POST https://alu-machine-learning-lfkq.onrender.com/predict live on render
 
 **REQUEST FORMAT**
-The API expects a JSON object with the following fields:
+- The API expects a JSON object with the following fields:
 
-{
-    "hours_studied": 7,
-    "previous_scores": 99,
-    "sleep_hours": 9,
-    "sample_question_papers_practiced": 1
-}
+
+- "hours_studied": 7,
+   -  "previous_scores": 99,
+    - "sleep_hours": 9,
+    - "sample_question_papers_practiced": 1
+
 
 
 **RESPONSE FORMAT**
-The API returns a JSON object with the predicted performance index:
-{
-    "performance_index": 91.0
-}
+- The API returns a JSON object with the predicted performance index:
+
+   - {"performance_index": 91.0}
+
 
 **Example Request using Postman**
 - Open Postman.
