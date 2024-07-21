@@ -70,7 +70,16 @@ A simple Flutter application is provided to interact with the API.
 - Input fields to enter hours studied, previous scores, sleep hours, and the number of sample question papers practiced.
 - A button to get the predicted performance index.
 - Display the prediction result.
+  
+![Screenshot 2024-07-21 184015](https://github.com/user-attachments/assets/7d6e5ec1-0af8-4d15-b107-d0e51523a101)
 
+
+![Screenshot 2024-07-21 184203](https://github.com/user-attachments/assets/f3e4ac2b-e17f-4a5b-920c-d9a538b4aae8)
+
+
+
+
+![Screenshot 2024-07-21 184525](https://github.com/user-attachments/assets/9ce10869-917f-43f7-a33e-6f300cb0cebd)
 
 
 
