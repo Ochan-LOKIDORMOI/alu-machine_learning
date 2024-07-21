@@ -3,6 +3,19 @@
 
 Welcome to the Students Performance Prediction Model and App repository. This repository contains three main components: a machine learning model that predicts students' performance index based on input features, a Flutter app that interacts with the model to provide performance predictions, and a folder for the Colab Notebook on Univariate regression. This README file will guide you through the structure, setup, and usage of these components.
 
+**SCREENSHOTS**
+
+![Screenshot 2024-07-21 184015](https://github.com/user-attachments/assets/7d6e5ec1-0af8-4d15-b107-d0e51523a101)
+
+
+![Screenshot 2024-07-21 184203](https://github.com/user-attachments/assets/f3e4ac2b-e17f-4a5b-920c-d9a538b4aae8)
+
+
+
+
+![Screenshot 2024-07-21 184525](https://github.com/user-attachments/assets/9ce10869-917f-43f7-a33e-6f300cb0cebd)
+
+
 **OVERVIEW**
 
 This project aims to predict a student's performance index based on several input features, including hours studied, previous scores, sleep hours, and the number of sample question papers practiced.
@@ -71,15 +84,7 @@ A simple Flutter application is provided to interact with the API.
 - A button to get the predicted performance index.
 - Display the prediction result.
   
-![Screenshot 2024-07-21 184015](https://github.com/user-attachments/assets/7d6e5ec1-0af8-4d15-b107-d0e51523a101)
 
-
-![Screenshot 2024-07-21 184203](https://github.com/user-attachments/assets/f3e4ac2b-e17f-4a5b-920c-d9a538b4aae8)
-
-
-
-
-![Screenshot 2024-07-21 184525](https://github.com/user-attachments/assets/9ce10869-917f-43f7-a33e-6f300cb0cebd)
 
 
 
