@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> predictPerformance() async {
     final response = await http.post(
-      Uri.parse('https://alu-machine-learning-lfkq.onrender.com/predict'),
+      Uri.parse('https://alu-machine-learning-1-hw3s.onrender.com/predict'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
