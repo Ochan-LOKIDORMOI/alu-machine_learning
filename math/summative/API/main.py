@@ -2,13 +2,17 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import numpy as np
 import joblib
+from fastapi.middleware.cors import CORSMiddleware
 
 # Define the input data model
+
+
 class InputData(BaseModel):
     hours_studied: float
     previous_scores: float
     sleep_hours: float
     sample_question_papers_practiced: int
+
 
 # Load a pre-trained model (replace with your model path)
 # Assume the model is saved as 'model.joblib'
@@ -16,6 +20,15 @@ model = joblib.load("model.pkl")
 
 # Create the FastAPI app
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.post("/predict")
 def predict(data: InputData):
@@ -26,10 +39,10 @@ def predict(data: InputData):
         data.sleep_hours,
         data.sample_question_papers_practiced
     ]).reshape(1, -1)
-    
+
     # Make a prediction
     prediction = model.predict(input_features)
-    
+
     # Return the prediction
     return {"performance_index": prediction[0]}
 
