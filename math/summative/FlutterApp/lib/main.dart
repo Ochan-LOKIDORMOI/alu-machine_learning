@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                 child: Text(
-                  'Predict Performance Index',
+                  'Predict',
                   style: TextStyle(fontSize: 20),
                 ),
               ),
