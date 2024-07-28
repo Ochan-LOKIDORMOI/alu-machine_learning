@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 20),
             Text(
-              result.isEmpty ? 'Enter values to get the prediction' : 'Performance Index: $result',
+              result.isEmpty ? '' : 'Performance Index: ${double.parse(result).toStringAsFixed(2)}',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.teal),
             ),
           ],
