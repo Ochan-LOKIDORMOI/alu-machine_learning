@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""NeuralNetwork"""
+"""NeuralNetwork Forward Propagation"""
 
 
 import numpy as np
@@ -56,3 +56,16 @@ class NeuralNetwork:
     def A2(self):
         """getter function of attribute A"""
         return self.__A2
+
+    def forward_prop(self, X):
+        """Forward propagation of the
+        neural network
+
+        X: is a numpy.ndarray with shape (nx, m) that contains the input data
+
+        Return: the private attributes __A1 and __A2, respectively"""
+        x = np.matmul(self.W1, X) + self.b1
+        self.__A1 = 1 / (1 + np.e**(-x))
+        x = np.matmul(self.W2, self.__A1) + self.b2
+        self.__A2 = 1 / (1 + np.e**(-x))
+        return self.__A1, self.__A2
