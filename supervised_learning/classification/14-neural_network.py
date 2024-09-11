@@ -111,7 +111,7 @@ class NeuralNetwork:
         alpha: is the learning rate"""
         m = 1 / X.shape[1]
         dz2 = A2 - Y
-        dz1 = np.dot(self.__W2.T, dz2) * A1 * (1- A1)
+        dz1 = np.dot(self.__W2.T, dz2) * A1 * (1 - A1)
         dw = np.matmul(dz1, X.T) * m
         self.__W1 = self.W1 - (alpha * dw)
         self.__b1 = self.b1 - (alpha * dz1.mean(axis=1, keepdims=True))
