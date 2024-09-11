@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 """Evaluate Neuron"""
-
-
-from cmath import cos
 import numpy as np
 
 
