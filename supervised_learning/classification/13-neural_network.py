@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 """NeuralNetwork Gradient Descent"""
 
-
 import numpy as np
-
 
 class NeuralNetwork:
     """NeuralNetwork class that defines a neural network with one hidden layer
@@ -65,14 +63,13 @@ class NeuralNetwork:
 
         Return: the private attributes __A1 and __A2, respectively"""
         x = np.matmul(self.W1, X) + self.b1
-        self.__A1 = 1 / (1 + np.e**(-x))
+        self.__A1 = 1 / (1 + np.exp(-x))
         x = np.matmul(self.W2, self.__A1) + self.b2
-        self.__A2 = 1 / (1 + np.e**(-x))
+        self.__A2 = 1 / (1 + np.exp(-x))
         return self.__A1, self.__A2
 
     def cost(self, Y, A):
-        """The cost of the model using logisitic
-        regression
+        """The cost of the model using logistic regression
 
         Y: is a numpy.ndarray with shape (1, m) that contains the correct
         labels for the input data
@@ -82,7 +79,7 @@ class NeuralNetwork:
         Return: the cost"""
         m = Y.shape[1]
         a = 1.0000001 - A
-        x = - 1 / m * np.sum(Y * np.log(A) + (1 - Y) * np.log(a))
+        x = -1 / m * np.sum(Y * np.log(A) + (1 - Y) * np.log(a))
         return x
 
     def evaluate(self, X, Y):
@@ -100,7 +97,7 @@ class NeuralNetwork:
         return evaluation, cost
 
     def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
-        """Function that aclculates one pass of gradient descent on the
+        """Function that calculates one pass of gradient descent on the
         neural network
 
         X: is a numpy.ndarray with shape (nx, m) that contains the input data
@@ -111,7 +108,7 @@ class NeuralNetwork:
         alpha: is the learning rate"""
         m = 1 / X.shape[1]
         dz2 = A2 - Y
-        dz1 = np.dot(self.__W2.T, dz2) * A1 * (1- A1)
+        dz1 = np.dot(self.__W2.T, dz2) * A1 * (1 - A1)
         dw = np.matmul(dz1, X.T) * m
         self.__W1 = self.W1 - (alpha * dw)
         self.__b1 = self.b1 - (alpha * dz1.mean(axis=1, keepdims=True))
