@@ -1,35 +1,37 @@
 #!/usr/bin/env python3
+"""This is Neuron"""
 
-"""Neuron"""
 
 import numpy as np
 
+
 class Neuron:
+    """This is class that defines a single neuron performing
+    binary classification"""
+
     def __init__(self, nx):
-        """ Check if nx is an integer"""
-        if not isinstance(nx, int):
-            raise TypeError("nx must be an integer")
-        """ Check if nx is greater than 0"""
+        """Class constructor
+
+        nx: is the number of input features to the neuron"""
+        if type(nx) is not int:
+            raise TypeError('nx must be an integer')
         if nx < 1:
-            raise ValueError("nx must be positive")
-        
-        """Initialize weights, bias, and activated output"""
-        self.__W = np.random.randn(1, nx)
+            raise ValueError('nx must be a positive integer')
+        self.__W = np.random.normal(size=(1, nx))
         self.__b = 0
         self.__A = 0
 
     @property
     def W(self):
-        """Getter for the weights vector."""
+        """getter function of attribute W"""
         return self.__W
 
     @property
     def b(self):
-        """Getter for the bias."""
+        """getter function of attribute W"""
         return self.__b
 
     @property
     def A(self):
-        """Getter for the activated output (prediction)."""
+        """getter function of attribute W"""
         return self.__A
-
