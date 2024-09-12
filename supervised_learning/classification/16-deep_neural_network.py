@@ -35,3 +35,4 @@ class DeepNeuralNetwork:
             sqrt = np.sqrt(2 / layerPrev)
             self.weights[w] = np.random.randn(layers[n], layerPrev) * sqrt
             self.weights[b] = np.zeros(shape=(layers[n], 1))
+            
