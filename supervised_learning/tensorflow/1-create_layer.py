@@ -16,4 +16,3 @@ def create_layer(prev, n, activation):
     heetal = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
     layer = tf.layers.Dense(n, activation, kernel_initializer=heetal)
     return layer(prev)
-
