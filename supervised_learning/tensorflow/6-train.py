@@ -26,7 +26,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha,
     save_path: designates where to save the model
 
     Return: the path where the model was saved"""
-    x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
+    x, y = createPH(X_train.shape[1], Y_train.shape[1])
     tf.add_to_collection("x", x)
     tf.add_to_collection("y", y)
     y_pred = forward_prop(x, layer_sizes, activations)
