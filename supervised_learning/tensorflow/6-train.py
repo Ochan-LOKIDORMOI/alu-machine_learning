@@ -28,7 +28,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha,
     Return: the path where the model was saved"""
     x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
     tf.add_to_collection("x", x)
-    tf.add_to_collection("y", y) 
+    tf.add_to_collection("y", y)
     y_pred = forward_prop(x, layer_sizes, activations)
     tf.add_to_collection("y_pred", y_pred)
     loss = calculate_loss(y, y_pred)
