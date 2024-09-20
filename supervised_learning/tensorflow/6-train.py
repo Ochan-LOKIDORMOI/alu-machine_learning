@@ -26,16 +26,27 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha,
     save_path: designates where to save the model
 
     Return: the path where the model was saved"""
-    x, y = createPH(X_train.shape[1], Y_train.shape[1])
+    
+    x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
+    
     tf.add_to_collection("x", x)
     tf.add_to_collection("y", y)
+    
     y_pred = forward_prop(x, layer_sizes, activations)
     tf.add_to_collection("y_pred", y_pred)
+    
     loss = calculate_loss(y, y_pred)
+    tf.add_to_collection("loss", loss)
+    
     accuracy = calculate_accuracy(y, y_pred)
+    tf.add_to_collection("accuracy", accuracy)
+    
     train_op = create_train_op(loss, alpha)
+    tf.add_to_collection("train_op", train_op)
+    
     init = tf.global_variables_initializer()
     saver = tf.train.Saver()
+    
     with tf.Session() as sess:
         sess.run(init)
         for i in range(iterations + 1):
