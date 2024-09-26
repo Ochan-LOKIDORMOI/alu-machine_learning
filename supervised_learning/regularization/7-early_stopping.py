@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Early Stopping"""
 
-import bumpy as np
+import numpy as np
 
 
 def early_stopping(cost, opt_cost, threshold, patience, count):
