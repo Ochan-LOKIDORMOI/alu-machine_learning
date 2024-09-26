@@ -6,40 +6,25 @@ import numpy as np
 
 
 def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
-    """ that updates the weights and biases of a neural network using gradient
-    descent with L2 regularization:
-
-    Y: is a one-hot numpy.ndarray of shape (classes, m) that contains the
-    correct labels for the data
-        classes: is the number of classes
-        m: is the number of data points
-    weights: is a dictionary of the weights and biases of the neural network
-    cache: is a dictionary of the outputs of each layer of the neural network
-    alpha: is the learning rate
-    lambtha: is the L2 regularization parameter
-    L: is the number of layers of the network"""
+    """ updates the weights and biases of a neural network using gradient
+        descent with L2 regularization
+        Y: (numpy.ndarray) one-hot encoded labels of the data
+        weights: (dict) weights and biases of the network
+        cache: (dict) output of each layer
+        alpha: (float) learning rate
+        lambtha: (float) regularization parameter
+        L: (int) number of layers in the network
+        Returns: None
+    """
     m = Y.shape[1]
-    la = L
-    a = 'A' + str(la)
-    W = 'W' + str(la)
-    b = 'b' + str(la)
-    dz = cache[a] - Y
-    dw = (np.dot(cache['A' + str(la - 1)], dz.T) / m).T
-    dw = dw + (lambtha / m) * weights[W]
-    db = np.sum(dz, axis=1, keepdims=True) / m
-    weights[W] = weights[W] - alpha * dw
-    weights[b] = weights[b] - alpha * db
+    dz = cache["A" + str(L)] - Y
+    for i in range(L, 0, -1):
+        A = cache["A" + str(i - 1)]
+        W = weights["W" + str(i)]
+        b = weights["b" + str(i)]
+        dw = (1 / m) * np.matmul(dz, A.T) + (lambtha / m) * W
+        db = (1 / m) * np.sum(dz, axis=1, keepdims=True)
+        dz = np.matmul(W.T, dz) * (A * (1 - A))
+        weights["W" + str(i)] = weights["W" + str(i)] - alpha * dw
+        weights["b" + str(i)] = weights["b" + str(i)] - alpha * db
 
-    for la in range(L - 1, 0, -1):
-        a = 'A' + str(la)
-        W = 'W' + str(la)
-        b = 'b' + str(la)
-        wNext = 'W' + str(la + 1)
-        aNext = 'A' + str(la - 1)
-        g = cache[a] * (1 - cache[a])
-        dz = np.dot(weights[wNext].T, dz) * g
-        dw = (np.dot(cache[aNext], dz.T) / m).T + ((lambtha / m) * weights[W])
-        db = np.sum(dz, axis=1, keepdims=True) / m
-
-        weights[W] = weights[W] - alpha * dw
-        weights[b] = weights[b] - alpha * db
