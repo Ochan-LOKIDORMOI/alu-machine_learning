@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Adam"""
+"""Adam update"""
 
 import numpy as np
 
