@@ -5,7 +5,10 @@ import tensorflow as tf
 
 
 def create_batch_norm_layer(prev, n, activation):
-    """creates a batch normalization layer for a neural network in tensorflow"""
+    """
+    creates a batch normalization layer for
+    a neural network in tensorflow
+    """
     init = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
     x = tf.layers.Dense(units=n, kernel_initializer=init)(prev)
     mean, variance = tf.nn.moments(x, axes=[0])
