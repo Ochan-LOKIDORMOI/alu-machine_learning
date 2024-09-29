@@ -3,52 +3,69 @@
 
 import tensorflow as tf
 
+def create_batch_norm_layer(prev, n, activation):
+    """
+    Creates a batch normalization
+    layer for a neural network in tensorflow
+    """
+    init = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
+    layer = tf.layers.Dense(units=n, kernel_initializer=init)
+    z = layer(prev)
+    mean, variance = tf.nn.moments(z, axes=[0])
+    beta = tf.Variable(tf.zeros([n]), trainable=True)
+    gamma = tf.Variable(tf.ones([n]), trainable=True)
+    epsilon = 1e-8
+    batch_norm = tf.nn.batch_normalization(z, mean,
+                                           variance, beta, gamma, epsilon)
+    return activation(batch_norm)
 
-def model(Data_train, Data_valid, layers, activations,
-          alpha=0.001, beta1=0.9, beta2=0.999, epsilon=1e-8,
-          decay_rate=1, batch_size=32, epochs=5, save_path='/tmp/model.ckpt'):
+
+def model(Data_train, Data_valid,
+          layers, activations, alpha=0.001, beta1=0.9, beta2=0.999,
+          epsilon=1e-8, decay_rate=1, batch_size=32, epochs=5,
+          save_path='/tmp/model.ckpt'):
     """
-    Data_train is a tuple containing the training inputs
-    and training labels, respectively
-    Data_valid is a tuple containing the validation
-    inputs and validation labels, respectively
-    layers is a list containing the number of nodes
-    in each layer of the network
-    activations is a list containing the activation
-    functions for each layer of the network
-    alpha is the learning rate
-    beta1 is the weight for the first
-    moment of Adam Optimization
-    beta2 is the weight for the second moment of Adam Optimization
-    epsilon is a small number used to avoid division by zero
-    decay_rate is the decay rate for inverse time
-    decay of the learning rate
-    batch_size is the number of data points
-    that should be in a mini-batch
-    epochs is the number of times the training
-    should pass through the data set
-    save_path is the path where the model should be saved to
-    Returns: the path where the model was saved
+    Function that builds, trains, and saves a
+    neural network model in tensorflow using Adam optimization,
+    mini-batch gradient descent, learning rate decay,
+    and batch normalization
     """
-    x = tf.placeholder(tf.float32, shape=[None, Data_train[0].shape[1]], name='x')
-    y = tf.placeholder(tf.float32, shape=[None, Data_train[1].shape[1]], name='y')
+    x, y = Data_train
+    x_valid, y_valid = Data_valid
     tf.add_to_collection('x', x)
     tf.add_to_collection('y', y)
-    for i in range(len(layers)):
-        if i == 0:
-            init = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
-            x = tf.layers.Dense(units=layers[i], kernel_initializer=init)(x)
-        else:
-            init = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
-            x = tf.layers.Dense(units=layers[i], kernel_initializer=init)(x)
-        if i < len(layers) - 1:
-            mean, variance = tf.nn.moments(x, axes=[0])
-            beta = tf.Variable(tf.constant(0.0, shape=[layers[i]]), trainable=True)
-            gamma = tf.Variable(tf.constant(1.0, shape=[layers[i]]), trainable=True)
-            epsilon = 1e-8
-            x = tf.nn.batch_normalization(x, mean, variance, beta, gamma, epsilon)
-            x = activations[i](x)
-    y_pred = x
-    loss = tf.losses.softmax_cross_entropy(y, y_pred)
-    global_step = tf.Variable(0, trainable=False)
-    alpha = tf.train.inverse_time_decay(alpha, global_step, decay_rate, staircase=True)
+    tf.add_to_collection('x_valid', x_valid)
+    tf.add_to_collection('y_valid', y_valid)
+    tf.add_to_collection('alpha', alpha)
+    tf.add_to_collection('beta1', beta1)
+    tf.add_to_collection('beta2', beta2)
+    tf.add_to_collection('epsilon', epsilon)
+    tf.add_to_collection('decay_rate', decay_rate)
+    tf.add_to_collection('batch_size', batch_size)
+    tf.add_to_collection('epochs', epochs)
+    tf.add_to_collection('save_path', save_path)
+    with tf.Session() as sess:
+        x = tf.placeholder(tf.float32, shape=(None, x.shape[1]), name='x')
+        y = tf.placeholder(tf.float32, shape=(None, y.shape[1]), name='y')
+        x_valid = tf.placeholder(tf.float32, shape=(None, x_valid.shape[1]), name='x_valid')
+        y_valid = tf.placeholder(tf.float32, shape=(None, y_valid.shape[1]), name='y_valid')
+        alpha = tf.placeholder(tf.float32, name='alpha')
+        beta1 = tf.placeholder(tf.float32, name='beta1')
+        beta2 = tf.placeholder(tf.float32, name='beta2')
+        epsilon = tf.placeholder(tf.float32, name='epsilon')
+        decay_rate = tf.placeholder(tf.float32, name='decay_rate')
+        batch_size = tf.placeholder(tf.int32, name='batch_size')
+        epochs = tf.placeholder(tf.int32, name='epochs')
+        save_path = tf.placeholder(tf.string, name='save_path')
+        y_pred = create_batch_norm_layer(x, layers[0], activations[0])
+        for i in range(1, len(layers)):
+            y_pred = create_batch_norm_layer(y_pred, layers[i],
+                                             activations[i])
+        loss = tf.losses.mean_squared_error(y, y_pred)
+        accuracy = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(y, 1),
+                                                   tf.argmax(y_pred, 1)),
+                                          tf.float32))
+        global_step = tf.Variable(0, trainable=False)
+        decayed_learning_rate = tf.train.inverse_time_decay(alpha,
+                                                            global_step, decay_rate,
+                                                            1, staircase=True)
