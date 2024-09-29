@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Put it all together and what do you get"""
 
+import numpy as np
 import tensorflow as tf
 
 def create_batch_norm_layer(prev, n, activation):
