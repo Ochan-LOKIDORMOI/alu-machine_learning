@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Normalization Constants"""
 
-import tensorflow as tf
+import numpy as np
 
 
 def normalization_constants(X):
