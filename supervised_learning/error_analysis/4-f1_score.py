@@ -2,6 +2,8 @@
 """F1 score calculation"""
 
 import numpy as np
+sensitivity = __import__('1-sensitivity').sensitivity
+precision = __import__('2-precision').precision
 
 
 def f1_score(confusion):
@@ -9,9 +11,6 @@ def f1_score(confusion):
     Calculates the F1 score for
     each class in a confusion matrix
     """
-    TP = np.diagonal(confusion)
-    FP = np.sum(confusion, axis=0) - TP
-    FN = np.sum(confusion, axis=1) - TP
-    precision = TP / (TP + FP)
-    recall = TP / (TP + FN)
-    return 2 * (precision * recall) / (precision + recall)
+    sens = sensitivity(confusion)
+    prec = precision(confusion)
+    return 2 * sens * prec / (sens + prec)
