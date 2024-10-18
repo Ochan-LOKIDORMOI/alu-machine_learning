@@ -2,6 +2,7 @@
 
 import pandas as pd
 import string
+import numpy as np
 
 
 def from_numpy(array):
