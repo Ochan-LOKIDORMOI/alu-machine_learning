@@ -14,8 +14,5 @@ df.rename(columns={'Timestamp': 'Datetime'}, inplace=True)
 # Convert the 'Datetime' column to datetime format
 df['Datetime'] = pd.to_datetime(df['Datetime'], unit='s')
 
-# Display only the 'Datetime' and 'Close' columns
-df = df[['Datetime', 'Close']]
-
-# Print the last 5 rows
-print(df.tail())
+# Print the last 5 rows and Display only the 'Datetime' and 'Close' columns
+print(df[['Datetime', 'Close']].tail())
