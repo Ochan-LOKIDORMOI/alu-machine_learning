@@ -1,13 +1,23 @@
 #!/usr/bin/env python3
 """
-This module contains the class for the game of Tic Tac Toe.
-
-The module contains the following classes:
+This module contains the function to retrieve the home planets
+of all sentient species from the SWAPI API.
 """
 
 import requests
 
 def sentientPlanets():
+    """
+    Fetches and returns a list of names of home planets for all sentient species
+    from the SWAPI API.
+
+    The function handles pagination to collect all species marked as 'sentient' and 
+    retrieves the corresponding homeworld name for each. If a homeworld is not specified
+    or if the API call fails, 'unknown' is used as a placeholder.
+
+    Returns:
+        list: A sorted list of unique planet names of all sentient species.
+    """
     base_url = "https://swapi-api.alx-tools.com/species/"
     planets = set()
     next_page = base_url
