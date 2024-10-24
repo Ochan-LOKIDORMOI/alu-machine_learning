@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Sentience API
+This module contains the class for the game of Tic Tac Toe.
+
+The module contains the following classes:
 """
 
 import requests
