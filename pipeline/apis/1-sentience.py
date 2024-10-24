@@ -22,37 +22,19 @@ def sentientPlanets():
     base_url = "https://swapi-api.alx-tools.com/species/"
     planets = set()
     next_page = base_url
-
+    
     while next_page:
         response = requests.get(next_page)
         if response.status_code != 200:
-            print(f"Failed to fetch data from {next_page}, status code: {response.status_code}")
             break
-
         data = response.json()
-        species_list = data.get('results', [])
-
-        for species in species_list:
-            if species.get('designation') == 'sentient':
-                homeworld_url = species.get('homeworld')
-                if homeworld_url:
-                    # Get the homeworld name
-                    homeworld_response = requests.get(homeworld_url)
-                    if homeworld_response.status_code == 200:
-                        homeworld_data = homeworld_response.json()
-                        planet_name = homeworld_data.get('name', 'unknown')
-                        if planet_name:
-                            planets.add(planet_name)
-                        else:
-                            print(f"Homeworld name missing for URL: {homeworld_url}")
-                    else:
-                        print(f"Failed to fetch homeworld data from {homeworld_url}, "
-                              f"status code: {homeworld_response.status_code}")
-                        planets.add('unknown')
+        for species in data['results']:
+            if species['designation'] == 'sentient':
+                homeworld = species['homeworld']
+                if homeworld:
+                    planet = requests.get(homeworld).json()['name']
                 else:
-                    print(f"Homeworld URL missing for species: {species.get('name', 'Unknown Species')}")
-                    planets.add('unknown')
-
-        next_page = data.get('next')
-
-    return sorted(planets)
+                    planet = 'unknown'
+                planets.add(planet)
+    next_page = data['next']
+    return sorted(list(planets))
