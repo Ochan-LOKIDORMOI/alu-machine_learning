@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 
-"""Script that prints the location of a specific user"""
+
+""" Return list of ships"""
 
 import requests
 import sys
 import time
 
-def get_user_location(api_url):
-    response = requests.get(api_url)
 
-    if response.status_code == 404:
-        print("Not found")
-    elif response.status_code == 403:
-        reset_time = int(response.headers.get('X-RateLimit-Reset', 0))
+if __name__ == "__main__":
+    res = requests.get(sys.argv[1])
+
+    if res.status_code == 403:
+        rate_limit = int(res.headers.get('X-Ratelimit-Reset'))
         current_time = int(time.time())
-        minutes_until_reset = (reset_time - current_time) // 60
-        print(f"Reset in {minutes_until_reset} min")
-    else:
-        user_data = response.json()
-        location = user_data.get('location')
-        if location:
-            print(location)
-        else:
-            print("Location not available")
+        diff = (rate_limit - current_time) // 60
+        print("Reset in {} min".format(diff))
+        # get remaining rate
+
+    elif res.status_code == 404:
+        print("Not found")
+    elif res.status_code == 200:
+        res = res.json()
+        print(res['location'])
