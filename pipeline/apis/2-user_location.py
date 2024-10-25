@@ -1,42 +1,48 @@
 #!/usr/bin/env python3
+'''
+Prints the location of a user
+'''
+
+
 import sys
 import requests
-from datetime import datetime
+import time
 
-def fetch_user_location(url):
+
+def get_user_location(api_url):
+    """
+    Fetch and print the location of a GitHub user.
+
+    :param api_url: The API URL for the user
+    """
     try:
-        response = requests.get(url)
-        
-        # Check if the user exists
-        if response.status_code == 404:
-            print("Not found")
-            return
-        
-        # Handle rate limit
-        elif response.status_code == 403:
-            reset_timestamp = int(response.headers.get("X-Ratelimit-Reset", 0))
-            reset_time = datetime.fromtimestamp(reset_timestamp)
-            minutes_remaining = int((reset_time - datetime.now()).total_seconds() / 60)
-            print(f"Reset in {minutes_remaining} min")
-            return
+        response = requests.get(api_url)
 
-        # Successful response
-        elif response.status_code == 200:
+        if response.status_code == 200:
             user_data = response.json()
-            location = user_data.get("location", "Location not available")
-            print(location)
-            return
-
-        # Other status codes
+            location = user_data.get('location')
+            if location:
+                print(location)
+            else:
+                print('Location not available')
+        elif response.status_code == 404:
+            print('Not found')
+        elif response.status_code == 403:
+            reset_time = int(
+                response.headers.get('X-RateLimit-Reset', time.time()))
+            current_time = int(time.time())
+            wait_time = (reset_time - current_time) // 60
+            print('Reset in {} min'.format(wait_time))
         else:
-            print("An error occurred")
+            print('Error: {}'.format(response.status_code))
+    except requests.RequestException as e:
+        print('An error occurred: {}'.format(e))
 
-    except requests.exceptions.RequestException as e:
-        print("An error occurred:", e)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        print("Usage: ./2-user_location.py <user_api_url>")
-    else:
-        user_url = sys.argv[1]
-        fetch_user_location(user_url)
+        print('Usage: ./2-user_location.py <api_url>')
+        sys.exit(1)
+
+    api_url = sys.argv[1]
+    get_user_location(api_url)
