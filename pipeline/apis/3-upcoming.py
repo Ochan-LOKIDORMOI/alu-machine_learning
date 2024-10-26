@@ -31,4 +31,4 @@ if __name__ == '__main__':
     string = "{} ({}) {} - {} ({})".format(launch_name, date, rocket_name,
     launchpad_name, launchpad_local)
 
-    print(string)
+print(string)
