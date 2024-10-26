@@ -4,7 +4,8 @@ Script that prints the location of a specific GitHub user using the GitHub API.
 Handles rate limiting and user not found cases.
 """
 import sys
-import requests
+from anyio import current_time
+import requests 
 import time
 
 
@@ -28,7 +29,7 @@ def get_user_location(api_url):
             return 'Not found'
         elif response.status_code == 403:
             reset_time = int(response.headers.get('X-RateLimit-Reset', 0))
-            current_time = int(time.time())
+            currentignore_time = int(time.time())
             minutes_remaining = max(0, (reset_time - current_time) // 60)
             return 'Reset in {} min'.format(minutes_remaining)
         else:
