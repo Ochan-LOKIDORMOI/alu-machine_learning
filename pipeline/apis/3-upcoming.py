@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""How many by rocket?"""
+"""Displays the upcoming launch with these information"""
 import requests
 from datetime import datetime
 
 
 if __name__ == '__main__':
-    """pipeline api"""
+    """Displays the upcoming launch with these information"""
     url = "https://api.spacexdata.com/v4/launches/upcoming"
     r = requests.get(url)
     recent = 0
@@ -16,19 +16,16 @@ if __name__ == '__main__':
             recent = new
             launch_name = dic["name"]
             date = dic["date_local"]
-            rocket_id = dic["rocket"]
-    rurl = "https://api.spacexdata.com/v4/rockets/" + rocket_id
-    rocket_data = requests.get(rurl).json()
-    rocket_name = rocket_data["name"]
+            rocket_number = dic["rocket"]
+            launch_number = dic["launchpad"]
 
-    launchpad_id = dic["launchpad"]
-    lurl = "https://api.spacexdata.com/v4/launchpads/" + launchpad_id
+    rurl = "https://api.spacexdata.com/v4/rockets/" + rocket_number
+    rocket_name = requests.get(rurl).json()["name"]
+    lurl = "https://api.spacexdata.com/v4/launchpads/" + launch_number
     launchpad = requests.get(lurl)
-    launchpad_data = launchpad.json()
-    launchpad_name = launchpad_data["name"]
-    launchpad_local = launchpad_data["locality"]
-
+    launchpad_name = launchpad.json()["name"]
+    launchpad_local = launchpad.json()["locality"]
     string = "{} ({}) {} - {} ({})".format(launch_name, date, rocket_name,
-    launchpad_name, launchpad_local)
-    
+                                           launchpad_name, launchpad_local)
+
     print(string)
