@@ -19,15 +19,21 @@ if __name__ == '__main__':
             launch_name = dic["name"]
             date = dic["date_local"]
             rocket_id = dic["rocket"]
-            launchpad_id = dic["launchpad"]
 
 
     rurl = "https://api.spacexdata.com/v4/rockets/" + rocket_id
-    rocket_name = requests.get(rurl).json()["name"]
+    rocket_data = requests.get(rurl).json()
+    rocket_name = rocket_data["name"]
+
+
+    launchpad_id = dic["launchpad"]
     lurl = "https://api.spacexdata.com/v4/launchpads/" + launchpad_id
     launchpad = requests.get(lurl)
-    launchpad_name = launchpad.json()["name"]
-    launchpad_local = launchpad.json()["locality"]
+    launchpad_data = launchpad.json()
+    launchpad_name = launchpad_data["name"]
+    launchpad_local = launchpad_data["locality"]
+
+
     string = "{} ({}) {} - {} ({})".format(launch_name, date, rocket_name,
                                             launchpad_name, launchpad_local)
 
