@@ -3,4 +3,4 @@ SELECT tv_genres.name AS name, SUM(rating) AS rating
 FROM tv_genres
 JOIN tv_shows ON tv_shows.genre_id = tv_genres.id
 GROUP BY tv_genres.name
-ORDER BY rating DESC;
+ORDER BY rating DESC
