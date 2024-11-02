@@ -1,1 +1,2 @@
-mongo --eval "show dbs"
+// show all dbs
+show dbs
