@@ -16,3 +16,24 @@ Read or watch:
 - [Introduction to Apache Spark](https://docs.databricks.com/en/spark/index.html)
 
 - [MLflow Documentation](https://mlflow.org/docs/latest/index.html)
+
+# **Learning Objectives**
+At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
+
+~General~
+What is the ML Life Cycle?
+What are the challenges of implementing the ML Life Cycle?
+How to use Databricks and MLFlow to deploy an ML Model
+
+# **Tasks**
+**Project Requirements:**
+
+Create a student Databricks account and sign up for their community version. Then, develop your own ML project using Databricks and MLFlow:
+
+Pick any of the models that we have built over the course of this specialization and implement it in Databricks
+Create a new MLFlow experiment
+Create a new cluster
+Add your data
+When your ML model is ran, it should keep track of the relevant parameters and metrics
+Your model should be packaged into an MLflow Model
+When done, please include screen shots of the results of your training and logging with Databricks below.
