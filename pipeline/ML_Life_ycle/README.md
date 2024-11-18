@@ -37,3 +37,6 @@ At the end of this project, you are expected to be able to explain to anyone, wi
 - When your ML model is ran, it should keep track of the relevant parameters and metrics
 - Your model should be packaged into an MLflow Model
 - When done, please include screen shots of the results of your training and logging with Databricks below.
+
+# **Databrick**
+[Published Notebook](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/3453149061701193/250785027745875/4353255158280749/latest.html)
