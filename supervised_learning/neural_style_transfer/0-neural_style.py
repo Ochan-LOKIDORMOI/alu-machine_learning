@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Neural Style Transfer Module"""
+"""
+Defines class NST that performs tasks for neural style transfer
+"""
+
 
 import numpy as np
 import tensorflow as tf
@@ -7,64 +10,70 @@ import tensorflow as tf
 
 class NST:
     """
-    A class to perform Neural Style Transfer.
+    Performs tasks for Neural Style Transfer
 
-    Attributes:
-        style_layers (list): List of layers used for style extraction.
-        content_layer (str): Layer used for content extraction.
-        style_image (tf.Tensor): Preprocessed style image.
-        content_image (tf.Tensor): Preprocessed content image.
-        alpha (float): Weight for content cost.
-        beta (float): Weight for style cost.
+    public class attributes:
+        style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1',
+                        'block4_conv1', 'block5_conv1']
+        content_layer = 'block5_conv2'
+
+    instance attributes:
+        style_image: preprocessed style image
+        content_image: preprocessed style image
+        alpha: weight for content cost
+        beta: weight for style cost
+
+    class constructor:
+        def __init__(self, style_image, content_image, alpha=1e4, beta=1)
+
+    static methods:
+        def scale_image(image):
+            rescales an image so the pixel values are between 0 and 1
+                and the largest side is 512 pixels
     """
-    
-    style_layers = [
-        'block1_conv1', 
-        'block2_conv1', 
-        'block3_conv1', 
-        'block4_conv1', 
-        'block5_conv1'
-    ]
-    
+    style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1',
+                    'block4_conv1', 'block5_conv1']
     content_layer = 'block5_conv2'
 
     def __init__(self, style_image, content_image, alpha=1e4, beta=1):
         """
-        Initializes the NST class with style and content images.
+        Class constructor for Neural Style Transfer class
 
-        Parameters:
-            style_image (np.ndarray): The image used as a style reference.
-            content_image (np.ndarray): The image used as a content reference.
-            alpha (float): The weight for content cost. Default is 1e4.
-            beta (float): The weight for style cost. Default is 1.
+        parameters:
+            style_image [numpy.ndarray with shape (h, w, 3)]:
+                image used as style reference
+            content_image [numpy.ndarray with shape (h, w, 3)]:
+                image used as content reference
+            alpha [float]: weight for content cost
+            beta [float]: weight for style cost
 
-        Raises:
-            TypeError: If the images are not in the correct format or if alpha/beta are invalid.
+        Raises TypeError if input are in incorrect format
+        Sets TensorFlow to execute eagerly
+        Sets instance attributes
         """
-        # Validate style_image
-        if not isinstance(style_image, np.ndarray) or \
-           style_image.ndim != 3 or \
-           style_image.shape[2] != 3:
-            raise TypeError("style_image must be a numpy.ndarray with shape (h, w, 3)")
-        
-        # Validate content_image
-        if not isinstance(content_image, np.ndarray) or \
-           content_image.ndim != 3 or \
-           content_image.shape[2] != 3:
-            raise TypeError("content_image must be a numpy.ndarray with shape (h, w, 3)")
-        
-        # Validate alpha
-        if not (isinstance(alpha, (int, float)) and alpha >= 0):
+        if type(style_image) is not np.ndarray or \
+           len(style_image.shape) != 3:
+            raise TypeError(
+                "style_image must be a numpy.ndarray with shape (h, w, 3)")
+        if type(content_image) is not np.ndarray or \
+           len(content_image.shape) != 3:
+            raise TypeError(
+                "content_image must be a numpy.ndarray with shape (h, w, 3)")
+        style_h, style_w, style_c = style_image.shape
+        content_h, content_w, content_c = content_image.shape
+        if style_h <= 0 or style_w <= 0 or style_c != 3:
+            raise TypeError(
+                "style_image must be a numpy.ndarray with shape (h, w, 3)")
+        if content_h <= 0 or content_w <= 0 or content_c != 3:
+            raise TypeError(
+                "content_image must be a numpy.ndarray with shape (h, w, 3)")
+        if (type(alpha) is not float and type(alpha) is not int) or alpha < 0:
             raise TypeError("alpha must be a non-negative number")
-        
-        # Validate beta
-        if not (isinstance(beta, (int, float)) and beta >= 0):
+        if (type(beta) is not float and type(beta) is not int) or beta < 0:
             raise TypeError("beta must be a non-negative number")
 
-        # Set TensorFlow to execute eagerly
-        tf.config.run_functions_eagerly(True)
+        tf.enable_eager_execution()
 
-        # Set instance attributes
         self.style_image = self.scale_image(style_image)
         self.content_image = self.scale_image(content_image)
         self.alpha = alpha
@@ -73,40 +82,38 @@ class NST:
     @staticmethod
     def scale_image(image):
         """
-        Rescales an image such that its pixel values are between 0 and 1 
-        and its largest side is 512 pixels.
+        Rescales an image such that its pixels values are between 0 and 1
+            and its largest side is 512 pixels
 
-        Parameters:
-            image (np.ndarray): A numpy array of shape (h, w, 3) containing the image to be scaled.
+        parameters:
+            image [numpy.ndarray of shape (h, w, 3)]:
+                 image to be rescaled
 
-        Raises:
-            TypeError: If the input image is not in the correct format.
+        Scaled image should be tf.tensor with shape (1, h_new, w_new, 3)
+            where max(h_new, w_new) is 512 and
+            min(h_new, w_new) is scaled proportionately
+        Image should be resized using bicubic interpolation.
+        Image's pixels should be rescaled from range [0, 255] to [0, 1].
 
-        Returns:
-            tf.Tensor: The scaled image as a tensor of shape (1, h_new, w_new, 3).
+        returns:
+            the scaled image
         """
-        # Validate image
-        if not isinstance(image, np.ndarray) or \
-           image.ndim != 3 or \
-           image.shape[2] != 3:
-            raise TypeError("image must be a numpy.ndarray with shape (h, w, 3)")
-
-        # Get original dimensions
-        h, w, _ = image.shape
-
-        # Determine new size maintaining aspect ratio
+        if type(image) is not np.ndarray or len(image.shape) != 3:
+            raise TypeError(
+                "image must be a numpy.ndarray with shape (h, w, 3)")
+        h, w, c = image.shape
+        if h <= 0 or w <= 0 or c != 3:
+            raise TypeError(
+                "image must be a numpy.ndarray with shape (h, w, 3)")
         if h > w:
-            new_h = 512
-            new_w = int(512 * w / h)
+            h_new = 512
+            w_new = int(w * (512 / h))
         else:
-            new_w = 512
-            new_h = int(512 * h / w)
+            w_new = 512
+            h_new = int(h * (512 / w))
 
-        # Resize the image using bicubic interpolation
-        image_resized = tf.image.resize(image, [new_h, new_w], method='bicubic')
-
-        # Rescale pixel values from [0, 255] to [0, 1]
-        image_scaled = image_resized / 255.0
-
-        # Add batch dimension and return as tensor
-        return tf.expand_dims(image_scaled, axis=0)
+        resized = tf.image.resize_bicubic(np.expand_dims(image, axis=0),
+                                          size=(h_new, w_new))
+        rescaled = resized / 255
+        rescaled = tf.clip_by_value(rescaled, 0, 1)
+        return (rescaled)
