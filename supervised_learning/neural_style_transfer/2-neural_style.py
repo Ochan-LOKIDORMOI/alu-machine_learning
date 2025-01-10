@@ -3,7 +3,6 @@
 Defines class NST that performs tasks for neural style transfer
 """
 
-
 import numpy as np
 import tensorflow as tf
 
@@ -12,24 +11,9 @@ class NST:
     """
     Performs tasks for Neural Style Transfer
 
-    public class attributes:
-        style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1',
-                        'block4_conv1', 'block5_conv1']
-        content_layer = 'block5_conv2'
-
-    instance attributes:
-        style_image: preprocessed style image
-        content_image: preprocessed style image
-        alpha: weight for content cost
-        beta: weight for style cost
-
-    class constructor:
-        def __init__(self, style_image, content_image, alpha=1e4, beta=1)
-
-    static methods:
-        def scale_image(image):
-            rescales an image so the pixel values are between 0 and 1
-                and the largest side is 512 pixels
+    includes:
+        - constructor
+        - scale_image
     """
     style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1',
                     'block4_conv1', 'block5_conv1']
@@ -78,8 +62,6 @@ class NST:
         self.content_image = self.scale_image(content_image)
         self.alpha = alpha
         self.beta = beta
-
-        self.load_model()
 
     @staticmethod
     def scale_image(image):
@@ -171,7 +153,7 @@ class NST:
         if not (isinstance(input_layer, tf.Tensor) or
                 isinstance(input_layer, tf.Variable)) or len(
                     input_layer.shape
-        ) != 4:
+                ) != 4:
             raise TypeError("input_layer must be a tensor of rank 4")
 
         _, h, w, c = input_layer.shape
