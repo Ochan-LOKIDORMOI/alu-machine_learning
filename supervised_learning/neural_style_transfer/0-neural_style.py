@@ -9,17 +9,26 @@ class NST:
     content_layer = 'block5_conv2'
 
     def __init__(self, style_image, content_image, alpha=1e4, beta=1):
+        # Validate style_image
         if not isinstance(style_image, np.ndarray) or style_image.ndim != 3 or style_image.shape[2] != 3:
             raise TypeError("style_image must be a numpy.ndarray with shape (h, w, 3)")
+        
+        # Validate content_image
         if not isinstance(content_image, np.ndarray) or content_image.ndim != 3 or content_image.shape[2] != 3:
             raise TypeError("content_image must be a numpy.ndarray with shape (h, w, 3)")
-        if not isinstance(alpha, (int, float)) or alpha < 0:
+        
+        # Validate alpha
+        if not (isinstance(alpha, (int, float)) and alpha >= 0):
             raise TypeError("alpha must be a non-negative number")
-        if not isinstance(beta, (int, float)) or beta < 0:
+        
+        # Validate beta
+        if not (isinstance(beta, (int, float)) and beta >= 0):
             raise TypeError("beta must be a non-negative number")
 
+        # Set TensorFlow to execute eagerly
         tf.config.run_functions_eagerly(True)
 
+        # Set instance attributes
         self.style_image = self.scale_image(style_image)
         self.content_image = self.scale_image(content_image)
         self.alpha = alpha
@@ -27,20 +36,26 @@ class NST:
 
     @staticmethod
     def scale_image(image):
+        # Validate image
         if not isinstance(image, np.ndarray) or image.ndim != 3 or image.shape[2] != 3:
             raise TypeError("image must be a numpy.ndarray with shape (h, w, 3)")
 
+        # Get original dimensions
         h, w, _ = image.shape
-        max_dim = 512
+
+        # Determine new size maintaining aspect ratio
         if h > w:
-            new_h = max_dim
-            new_w = int(w * max_dim / h)
+            new_h = 512
+            new_w = int(512 * w / h)
         else:
-            new_w = max_dim
-            new_h = int(h * max_dim / w)
+            new_w = 512
+            new_h = int(512 * h / w)
 
-        image = tf.image.resize(image, (new_h, new_w), method=tf.image.ResizeMethod.BICUBIC)
-        image = image / 255.0
-        image = tf.expand_dims(image, axis=0)
+        # Resize the image using bicubic interpolation
+        image_resized = tf.image.resize(image, [new_h, new_w], method='bicubic')
 
-        return image
+        # Rescale pixel values from [0, 255] to [0, 1]
+        image_scaled = image_resized / 255.0
+
+        # Add batch dimension and return as tensor
+        return tf.expand_dims(image_scaled, axis=0)
