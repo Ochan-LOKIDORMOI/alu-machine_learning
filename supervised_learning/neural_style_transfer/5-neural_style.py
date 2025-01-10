@@ -231,7 +231,7 @@ class NST:
             Calculates the style cost for generated image
 
             parameters:
-                style_outputs: a list containing the outputs of
+                style_outputs: lists containing the outputs of
                 the style layers
 
             returns:
