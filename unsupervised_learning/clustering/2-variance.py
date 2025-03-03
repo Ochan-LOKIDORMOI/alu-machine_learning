@@ -1,35 +1,41 @@
 #!/usr/bin/env python3
+
 """
-Defines a function that calculates
-the total intra-cluster variance for a data set
+a function that tests for the optimum
+number of clusters by variance
 """
 
 
 import numpy as np
+kmeans = __import__('1-kmeans').kmeans
+variance = __import__('2-variance').variance
 
 
-def variance(X, C):
-    """
-        A function def variance(X, C): that calculates
-        the total intra-cluster variance for a data set
+def optimum_k(X, kmin=1, kmax=None, iterations=1000):
+    '''
+    A function that tests for the optimum
+    '''
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
+        return None, None
+    if not isinstance(kmin, int) or kmin <= 0:
+        return None, None
+    if not isinstance(kmax, int) or kmax <= 0:
+        return None, None
+    if kmin >= kmax:
+        return None, None
+    if not isinstance(iterations, int) or iterations <= 0:
+        return None, None
+    if kmax is None:
+        kmax = X.shape[0]
 
-        Args:
-        X is a numpy.ndarray of shape (n, d)
-        containing the data set
-        C is a numpy.ndarray of shape (k, d) containing
-        the centroid means for each cluster
-
-        Returns:
-        - var, or None on failure
-        - var is the total variance
-    """
-    if not isinstance(X, np.ndarray) or not isinstance(C, np.ndarray) or \
-            len(X.shape) != 2 or len(C.shape) != 2 or \
-            X.shape[1] != C.shape[1] or C.shape[1] <= 0 or X.size == 0 or \
-            C.size == 0:
-        return None
-
-    dist_diff = np.linalg.norm(X - C[:, np.newaxis], axis=2).T
-    minimum_dist = np.min(dist_diff, axis=1)
-    var = np.sum(np.square(minimum_dist))
-    return var
+    results = []
+    d_vars = []
+    var = float('inf')
+    for k in range(kmin, kmax + 1):
+        C, clss = kmeans(X, k, iterations)
+        results.append((C, clss))
+        new_var = variance(X, C)
+        if k == kmin:
+            var = new_var
+        d_vars.append(var - new_var)
+    return results, d_vars
