@@ -1,33 +1,34 @@
 #!/usr/bin/env python3
-'''
-    function def absorbing(P): that
-    determines if a markov chain is absorbing
-'''
 
+"""
+This module determines if markov chain
+is absorbing"""
 
 import numpy as np
 
 
 def absorbing(P):
-    '''
-        Determines if a markov chain is absorbing
-    '''
-    if len(P.shape) != 2:
-        return None
-    n1, n2 = P.shape
-    if (n1 != n2) or type(P) is not np.ndarray:
-        return None
-    D = np.diagonal(P)
-    if (D == 1).all():
-        return True
-    if not (D == 1).any():
-        return False
+    """
+    determines steady state probabilities
+    of a markov chain
 
-    for i in range(n1):
-            # print('this is Pi {}'.format(P[i]))
-            for j in range(n2):
-                # print('this is Pj {}'.format(P[j]))
-                if (i == j) and (i + 1 < len(P)):
-                    if P[i + 1][j] == 0 and P[i][j + 1] == 0:
-                        return False
-    return True
+    P - square 2D numpy.ndarray: (n, n) -transition matrix
+        - P[i, j] - probability of transitioning from
+    state i to state j
+        - n no. of states in the markov chain
+
+    Returns: True if it is absorbing,
+        or False on failure
+    """
+    # absorbing states are states that have a probability of 1
+    # of transitioning to themselves
+    if type(P) is not np.ndarray or len(P.shape) != 2:
+        return False
+    n, n = P.shape
+    if n != P.shape[0]:
+        return False
+    if np.sum(P, axis=1).all() != 1:
+        return False
+    if np.any(np.diag(P) == 1):
+        return True
+    return False
